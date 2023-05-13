@@ -1,4 +1,4 @@
-import temperatureDB from '../DBTemporal/temperature.json' assert {type: 'json'}
+import { temperatureDB } from '../DBTemporal/temperature.js'
 
 let data = null
 if (!data) {
@@ -18,7 +18,7 @@ async function getTemperatureBySensor (sensorId) {
 }
 
 async function postTemperature ({ temperature, sensorId }) {
-  data.push({ date: new Date(), temperature: temperature, sensorID: sensorId })
+  data.push({ date: new Date(), temperature, sensorID: sensorId })
   return data
 }
 
