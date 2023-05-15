@@ -15,3 +15,13 @@ export const temperatureDB = [
     sensorID: '1'
   }
 ]
+
+export const idealTemperatureDB = {
+  value: '24'
+}
+export const calentador = {
+  value: '50'
+}
+export const ventilador = {
+  value: '80'
+}
