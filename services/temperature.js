@@ -1,9 +1,8 @@
-import { temperatureDB, idealTemperatureDB, calentador, ventilador } from '../DBTemporal/temperature.js'
+import { temperatureDB, idealTemperatureDB } from '../DBTemporal/temperature.js'
+import { getOutput } from '../helpers/fuzzy.js'
 
 let data = null
 let idealTemperature = null
-let calentadorData = null
-let ventiladorData = null
 
 if (!data) {
   data = temperatureDB
@@ -11,14 +10,6 @@ if (!data) {
 
 if (!idealTemperature) {
   idealTemperature = idealTemperatureDB
-}
-
-if (!calentadorData) {
-  calentadorData = calentador
-}
-
-if (!ventiladorData) {
-  ventiladorData = ventilador
 }
 
 async function getAllTemperature () {
@@ -43,19 +34,13 @@ async function postTemperature ({ value, sensorId }) {
 }
 
 async function getCalentador () {
-  return calentadorData
-}
-
-async function getVentilador () {
-  return ventiladorData
-}
-
-async function updateCalentador (value) {
-  calentadorData = value
-}
-
-async function updateVentilador (value) {
-  ventiladorData = value
+  const currentTemperature = data[data.length - 1].value
+  const idealTemp = idealTemperature.value
+  const errorValue = idealTemp - currentTemperature
+  const derivatedError = (data[data.length - 2].value - currentTemperature) / 10
+  const { KP, KI, KD } = getOutput(errorValue, derivatedError)
+  const output = KP * errorValue + KI * errorValue + KD * derivatedError
+  return { output, KP, KI, KD }
 }
 
 async function updateIdealTemperature (value) {
@@ -63,11 +48,8 @@ async function updateIdealTemperature (value) {
 }
 
 export default {
-  updateCalentador,
-  updateVentilador,
   updateIdealTemperature,
   getCalentador,
-  getVentilador,
   getAllTemperature,
   getIdealTemperature,
   getTemperatureByDate,
