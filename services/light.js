@@ -28,8 +28,9 @@ async function getLightBySensor (sensorId) {
   return data.filter(d => d.sensorID === sensorId)
 }
 
-async function postLight ({ value, sensorId }) {
-  data.push({ date: new Date(), value, sensorID: sensorId })
+async function postLight ({ sensor1, sensor2 }) {
+  const value = (sensor1 + sensor2) / 2
+  data.push({ date: new Date(), value })
   return data
 }
 

@@ -24,12 +24,9 @@ async function getTemperatureByDate (date) {
   return data.filter(d => d.date === date)
 }
 
-async function getTemperatureBySensor (sensorId) {
-  return data.filter(d => d.sensorID === sensorId)
-}
-
-async function postTemperature ({ value, sensorId }) {
-  data.push({ date: new Date(), value, sensorID: sensorId })
+async function postTemperature ({ sensor1, sensor2 }) {
+  const value = (sensor1 + sensor2) / 2
+  data.push({ date: new Date(), value })
   return data
 }
 
@@ -53,6 +50,5 @@ export default {
   getAllTemperature,
   getIdealTemperature,
   getTemperatureByDate,
-  getTemperatureBySensor,
   postTemperature
 }
